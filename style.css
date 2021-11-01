@@ -1,0 +1,111 @@
+main{
+    padding-top: 40px;
+}
+/* #principalApartamentos{
+    position: absolute;
+} */
+#buscar{
+    float: left;
+}
+#showApartamentos{
+    float: left;
+}
+#localizacaoImovel{
+    width: 15rem;
+    background-color: #fedb87;
+    border: solid #f3d875 1px;
+    border-radius: 5px;
+    padding: 10px 15px;
+}
+
+#buscarMais{
+    width: 15rem;
+    border-radius: 5px;
+    padding: 10px 15px;
+    border: solid gray 1px;
+    margin-top: 20px;
+}
+.listaApartamentos{
+    position: absolute;
+}
+.apartamento{
+   position: relative; 
+   border: solid 1px #A9A9A9;
+   height: 221px;
+   width: 55rem;
+   margin-bottom: 20px;
+}
+.apartamento img {
+    height: 219px;
+    width: 350px;
+}
+#showApartamentos{
+    padding: 10px 20px;
+}
+
+.imagemApartamento{
+    float: left;
+    padding-right: 10px;
+}
+.informApartamento{
+    float: left;    
+}
+.resultadoBusca{
+    font-size: 20px;
+    padding: 13px 0px;
+    
+}
+.btrestuladoBusca{
+    border: solid 1px #0d6efd;
+    border-radius: 15px;
+    color: #0d6efd;
+    padding: 5px 10px;
+    background-color: white ;
+}
+#opcoes ul{
+    padding: 0px 0px;
+    margin: 0px; 
+}
+#opcoes ul li:first-child{
+    margin-left: -0px;
+}
+#opcoes ul li{
+    display: inline-block;
+    padding: 5px 30px;
+    border-bottom: solid white;
+}
+#opcoes ul li a{
+    text-decoration: none;
+}
+#opcoes ul li:hover{ 
+    border-bottom: solid #0d6efd;
+}
+.endereco{
+    color: gray;
+}
+.descricaoApartamento{
+    font-size: 25px;
+}
+.detalhes{
+    font-size: 16px;
+}
+.bold{
+    font-weight: bold;
+}
+.precoCondominio{
+    font-size: 15px;
+}
+
+.linhaCinza{
+    border-top:  1px solid gray;
+    width: 100%;
+}
+.itensCondominio ul li{
+    display: inline-block;
+    background-color: #D3D3D3;
+    border-radius: 20px;
+    padding: 5px 10px; 
+    font-size: 12px;
+    color: #A9A9A9;
+    font-weight: 700;
+}
