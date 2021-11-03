@@ -1,85 +1,112 @@
-const buscar = async() =>{
-    try{
-      const response = await fetch("https://private-9e061d-piweb.apiary-mock.com/venda?state=rj&city=rio-de-janeiro");
-      const data = await response.json();           
-      //let buscarItens = data.estacoes.estacao     
+const inputBuscar = document.querySelector('#inputBuscar');
+const apartamentoContainer = document.querySelector(".listaApartamentos");
+const paiApartamento = document.querySelector('.apartamento');
+const exibirListaApartamentos = document.querySelector('.exibirListaApartamentos');
+const resultPesquisa = document.querySelector('.resultPesquisa');
+const imagemApartamento = document.querySelector('.imagemApartamento')
 
-      //exibir nome
-      const nome = data.search.result.listings[0].link.name;
-      const blocoApartamento = document.querySelector(".descricaoApartamento");
-      blocoApartamento.innerText= nome;
 
-      //Montando Endereco
 
-      //rua
-      const logradouro = data.search.result.listings[0].link.data.street;
-      const enderecoLogradouro = document.querySelector(".logradouro");
-      enderecoLogradouro.innerText = logradouro;
+const apiURL = `https://private-9e061d-piweb.apiary-mock.com/venda?`
+
+  const inserirApartamentosNaPagina = informacoesApartamentos => {
+  const totalApartamentos = informacoesApartamentos.search.result.listings.length;
+  const estado = informacoesApartamentos.search.result.listings[0].listing.address.stateAcronym;
+  const cidade = informacoesApartamentos.search.result.listings[0].listing.address.city;
+  
+  exibirListaApartamentos.innerHTML += `
+    <div class="linhaCinza" >
+      <p class="resultadoBusca"> <span class="bold"> ${totalApartamentos} </span>Imóveis à venda em ${cidade} - ${estado} </p>    
+      <p> <button class="btrestuladoBusca" > ${cidade} - ${estado}  x </button>  </p>            
+    </div>
+     <div class="listaApartamentos">
+  `
+
+
+  exibirListaApartamentos.innerHTML += informacoesApartamentos.search.result.listings.map( apartamento => `
+    <div class="apartamento" >
+
+      <div class="imagemApartamento">
+        <img src="${apartamento.medias[0].url}" alt="" >
+      </div>                      
+
+      <div class="informApartamento">
+        <div class="endereco"> 
+          <span class="logradouro"> ${apartamento.link.data.neighborhood} </span> , 
+          <span class="numero">  ${apartamento.link.data.streetNumber} </span> - 
+          <span class="bairro"> ${apartamento.link.data.street} </span>, 
+          <span class="cidade"> ${apartamento.link.data.city} </span> - 
+          <span class="estado"> ${apartamento.link.data.state} </span> 
+        </div>
+
+        <div class="descricaoApartamento"> ${apartamento.link.name} </div> 
+
+        <p class="detalhes"> 
+          <span class="area"> ${apartamento.listing.totalAreas} </span> m2 
+          <span class="qtQuartos">  ${apartamento.listing.bedrooms}</span>  Quartos 
+          <span class="qtBanheiros">  ${apartamento.listing.bathrooms}</span>  Banheiros 
+          <span class="qtVagas">  ${apartamento.listing.parkingSpaces}</span>  Vagas
+        </p>
+      </div>
+
+      <div class="itensCondominio">
+        <ul class="facilidades" >
+          <li>Ar-condicionado</li>
+          <li>Quadra poliesportiva</li>
+          <li>Spa</li>
+          <li>Salão de Festas</li>
+          <li>Elevador</li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="bold"> <span class="preco"> $ ${apartamento.listing.pricingInfos[0].price} </span></p>
+        <p class="precoCondominio"> Condomínio:  <span class="bold condominio">R$ ${apartamento.listing.pricingInfos[0].monthlyCondoFee}</span> </p>
+      </div>   
       
-      //numero
-      const numero = data.search.result.listings[0].link.data.streetNumber;
-      const showNumero =document.querySelector(".numero")
-      showNumero.innerText = numero;
-      
-      //bairro
-      const bairro = data.search.result.listings[0].link.data.neighborhood;
-      const showBairro = document.querySelector(".bairro");
-      showBairro.innerText = bairro;
+    </div>
 
-      
-      //cidade
-      const cidade = data.search.result.listings[0].link.data.city;
-      const showCidade = document.querySelector(".cidade")
-      showCidade.innerText = cidade;
+  `).join(' ')
 
-      //estado
-      const estado = data.search.result.listings[0].listing.address.stateAcronym;
-      const showEstado = document.querySelector(".estado")
-      showEstado.innerText = estado;
-      
-      //medida     
-      const area = data.search.result.listings[0].listing.usableAreas[0];
-      const showArea = document.querySelector(".area");
-      showArea.innerText = area;
+  exibirListaApartamentos.innerHTML += `</div>`
+  
+}
 
-      console.log(data.search.result.listings[0].listing);
+const buscarApartamentosApi = async (state,city) => {
+  const response = await fetch(`${apiURL}state=${state}&city=${city}`)
+  const data = await response.json()
+  console.log(data)
 
+  inserirApartamentosNaPagina(data)
+}
+const pesquisaNaoEncontrada = function(){
+  
+}
+inputBuscar.addEventListener('blur', event => {
 
-      //quartos
-      const qtQuartos =  data.search.result.listings[0].listing.bedrooms;
-      const showQtQuartos = document.querySelector(".qtQuartos");
-      showQtQuartos.innerText = qtQuartos;
+  //Retira espaços vazio do início e fim da pesquisa
+  const searchTerm = inputBuscar.value.trim();
 
-      //banheiros
-      const qtBanheiros = data.search.result.listings[0].listing.bathrooms;
-      const showBanheiros = document.querySelector(".qtBanheiros");
-      showBanheiros.innerText = qtBanheiros;
+  if(searchTerm === 'São Paulo' || searchTerm === 'sp' ||  searchTerm === 'sao paulo'  ){
+    buscarApartamentosApi('sp','sao-paulo')
+  }else if(searchTerm === 'Rio de Janeiro' || searchTerm === 'rj' || searchTerm === 'rio de janeiro' || searchTerm === 'rio' ){
+    buscarApartamentosApi('rj','rio-de-janeiro')
+  }else{
 
-      //vagas
-      const qtVagas = data.search.result.listings[0].listing.parkingSpaces;
-      const showVagas = document.querySelector(".qtVagas");
-      showVagas.innerText = qtVagas;
-
-      //Facilidades
-      const faciliades = data.search.result.listings[0].listing.amenities[0];
-      const showFacilidades = document.querySelector(".facilidades");
-      showFacilidades.innerHTML = `<li>${faciliades} </li>`;
-      
-      //preço
-      const preco = data.search.result.listings[0].listing.pricingInfos[0].price;
-      const precoDecimal = parseFloat(preco).toFixed(2);
-      console.log(precoDecimal);
-      const showPreco = document.querySelector('.preco')
-      showPreco.innerText = precoDecimal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-
-      //condominio
-      const precoCondominio = data.search.result.listings[0].listing.pricingInfos[0].monthlyCondoFee;
-      const precoCondominioDecimal = parseFloat(precoCondominio).toFixed(2);
-      const showPrecoCondominio = document.querySelector(".condominio");
-      showPrecoCondominio.innerHTML = precoCondominioDecimal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
-      
-    }catch(err){
-      console.log("ERROR", err);
-    }
   }
-  buscar();
+
+
+  //verifica se não foi digitado nenhum valor
+  if(!searchTerm){
+    let titulo = document.createElement('h1');
+    let texto = document.createTextNode('Digite uma cidade para pesquisa!');
+    titulo.appendChild(texto);
+    resultPesquisa.appendChild(titulo);
+    exibirListaApartamentos.classList.add("ocultar");
+    return
+  }
+
+})
+
+
+
