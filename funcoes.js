@@ -87,7 +87,7 @@ inputBuscar.addEventListener('blur', event => {
   //Retira espaços vazio do início e fim da pesquisa
   const searchTerm = inputBuscar.value.trim();
 
-  if(searchTerm === 'São Paulo' || searchTerm === 'sp' ||  searchTerm === 'sao paulo'  ){
+  if(searchTerm === 'São Paulo' || searchTerm === 'sp' ||  searchTerm === 'sao paulo' || searchTerm === 'São paulo' ||  searchTerm === 'Sao paulo' ){
     buscarApartamentosApi('sp','sao-paulo')
   }else if(searchTerm === 'Rio de Janeiro' || searchTerm === 'rj' || searchTerm === 'rio de janeiro' || searchTerm === 'rio' ){
     buscarApartamentosApi('rj','rio-de-janeiro')
